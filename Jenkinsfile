@@ -55,7 +55,6 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    // Get the Jenkins workspace path dynamically
                     def baseDir = env.WORKSPACE
                     def artifactPath = "${baseDir}\\target\\crud-app-1.0-SNAPSHOT.jar"
                     def deployDir = "D:\\Deployed"
