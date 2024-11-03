@@ -55,11 +55,14 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    def artifactPath = "target/crud-app-1.0-SNAPSHOT.jar"
-                    def deployDir = "D:/Deployed"
-                    
+                    // Get the Jenkins workspace path dynamically
+                    def baseDir = env.WORKSPACE
+                    def artifactPath = "${baseDir}\\target\\crud-app-1.0-SNAPSHOT.jar"
+                    def deployDir = "D:\\Deployed"
+
                     try {
-                        bat "copy ${artifactPath} ${deployDir}"
+                        bat "if not exist \"${deployDir}\" mkdir \"${deployDir}\""
+                        bat "copy \"${artifactPath}\" \"${deployDir}\""
                         echo 'Deployment completed successfully.'
                     } catch (Exception e) {
                         echo "Deployment failed: ${e.message}"
