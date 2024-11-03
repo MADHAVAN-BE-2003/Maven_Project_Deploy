@@ -5,6 +5,7 @@ pipeline {
         retry(3)
         timeout(time: 1, unit: 'HOURS')
     }
+
     stages {
         stage('Prepare Workspace') {
             steps {
@@ -25,7 +26,7 @@ pipeline {
                     checkout([
                         $class: 'GitSCM', 
                         branches: [[name: '*/main']],
-                        userRemoteConfigs: [[url: 'https://github.com/MADHAVAN-BE-2003/Maven_Project_1.git']],
+                        userRemoteConfigs: [[url: 'https://github.com/MADHAVAN-BE-2003/Maven_Project_Deploy.git']],
                         extensions: [[$class: 'CleanBeforeCheckout']]
                     ])
                     echo 'Code checkout successful.'
@@ -50,6 +51,22 @@ pipeline {
                 }
             }
         }
+
+        stage('Deploy') {
+            steps {
+                script {
+                    def artifactPath = "target/crud-app-1.0-SNAPSHOT.jar"
+                    def deployDir = "D:/Deployed"
+                    
+                    try {
+                        bat "copy ${artifactPath} ${deployDir}"
+                        echo 'Deployment completed successfully.'
+                    } catch (Exception e) {
+                        echo "Deployment failed: ${e.message}"
+                    }
+                }
+            }
+        }
     }
 
     post {
@@ -66,10 +83,10 @@ pipeline {
             }
         }
         success {
-            echo 'Build and test stages completed successfully.'
+            echo 'Build, test, and deploy stages completed successfully.'
         }
         failure {
-            echo 'Build or Test failed. Check logs for details.'
+            echo 'Build, test, or deploy failed. Check logs for details.'
         }
     }
 }
