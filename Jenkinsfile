@@ -57,7 +57,7 @@ pipeline {
                 script {
                     def baseDir = env.WORKSPACE
                     def artifactPath = "${baseDir}\\target\\crud-app-1.0-SNAPSHOT.jar"
-                    def deployDir = "D:\\Deployed"
+                    def deployDir = "D:\\DevOps\\Deployed"
 
                     try {
                         bat "if not exist \"${deployDir}\" mkdir \"${deployDir}\""
